@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
   title = 'space-website';
 
   key = 'wpTie0GXS97IRCDGD4jUXm1ubjUqWe6SE4daK1OD';
+  neoApi = 'https://api.nasa.gov/neo/rest/v1/feed';
 
   data: TableContent[] = [];
 
@@ -25,16 +26,22 @@ export class AppComponent implements OnInit {
 
   public AppComponent() {}
 
+  getCurrentDateFormatted(): string {
+    const today = new Date();
+    return today.toISOString().substring(0, 10); // Gets only the Date part from the string
+  }
+
+  getApiForTodaysNeos() {
+    const timestampToday = this.getCurrentDateFormatted();
+    return this.appendApiKey(this.neoApi + `?start_date=${timestampToday}&end_date=${timestampToday}`);
+  }
+
+  appendApiKey(target: string) {
+    return target + '&api_key=' + this.key;
+  }
+
   getData(): Promise<NeowsResponse> {
-    // return new Promise((resolve, reject) =>
-    //   setTimeout(() => {
-    //     resolve(this.iss);
-    //   }, 100)
-    // );
-    return fetch(
-      'https://api.nasa.gov/neo/rest/v1/feed?start_date=2023-09-24&end_date=2023-09-24&api_key=' +
-        this.key
-    )
+    return fetch(this.getApiForTodaysNeos())
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
@@ -45,7 +52,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.getData().then((result) => {
       console.log(result.near_earth_objects);
-      const neos = result.near_earth_objects['2023-09-24'];
+      const neos = result.near_earth_objects[this.getCurrentDateFormatted()];
+      console.log('Neos: ' + result.near_earth_objects[this.getCurrentDateFormatted()], this.getCurrentDateFormatted())
       neos.forEach((neo) => {
         this.data.push({
           id: neo.id,
@@ -64,6 +72,7 @@ export class AppComponent implements OnInit {
               ) * 1000
             ) / 1000,
           hazard: neo.is_potentially_hazardous_asteroid,
+          time: neo.close_approach_data.at(0)?.close_approach_date_full.toTimeString()
         });
       });
     });
@@ -75,4 +84,5 @@ interface TableContent {
   size: number;
   distance: number;
   hazard: boolean;
+  time: string | undefined;
 }
