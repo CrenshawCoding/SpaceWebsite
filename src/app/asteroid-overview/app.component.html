@@ -3,19 +3,22 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <td>Id</td>
+      <td>Name</td>
       <td>Durchmesser (Meter)</td>
       <td>Distanz (AU)</td>
       <td>Is Hazard</td>
       <td>Uhrzeit</td>
+      <td>Geschwindigkeit</td>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let entry of data">
-      <td>{{entry.id}}</td>
+      <td>{{entry.name}}</td>
       <td>{{entry.size}}</td>
       <td>{{entry.distance}}</td>
       <td>{{entry.hazard}}</td>
+      <td>{{entry.time}}</td>
+      <td>{{entry.speed}}</td>
     </tr>
   </tbody>
 </table>

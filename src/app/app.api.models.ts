@@ -13,14 +13,16 @@ export interface SatelliteData {
 
 // Near Earth Object Web Service
 export interface NeowsResponse {
-  links: any;
+  links: {self: string};
   near_earth_objects: { [date: string]: Neo[] };
 }
 
 export interface Neo {
+  links: {self: string};
   id: string;
   neo_reference_id: string;
   name: string;
+  nasa_jpl_url: string;
   absolute_magnitude_h: number;
   estimated_diameter: {
     kilometers: {
@@ -38,8 +40,8 @@ export interface Neo {
 }
 
 export interface CloseApproachData {
-  close_approach_date: Date;
-  close_approach_date_full: Date;
+  close_approach_date: string;
+  close_approach_date_full: string;
   epoch_date_close_approach: number;
   relative_velocity: {
     kilometers_per_second: string;

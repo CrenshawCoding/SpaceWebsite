@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppComponent } from './asteroid-overview';
+import { AsteroidOverview } from './asteroid-overview/asteroid-overview.component';
+import { AsteroidFlyby } from './asteroid-flyby/asteroid-flyby.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AsteroidOverview,
+    AsteroidFlyby
   ],
   imports: [
     BrowserModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AsteroidOverview, AsteroidFlyby]
 })
 export class AppModule { }
